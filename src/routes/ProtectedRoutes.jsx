@@ -6,7 +6,7 @@ import useFetch from '../hooks/useFetch';
 import { verifyToken } from '../api/auth';
 export default function ProtectedRoutes() {
   const { state, dispatch } = useAuth();
-  const { trigger, loading } = useFetch(verifyToken, {
+  const { trigger } = useFetch(verifyToken, {
     onError: () => {
       dispatch({ type: 'LOGOUT' });
     },
@@ -18,7 +18,7 @@ export default function ProtectedRoutes() {
     dispatch({ type: 'BEGIN_LOADING' });
     trigger()
   }, [])
-  if (state.loading) {
+  if (state.loading || !state.authChecked) {
     return (
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}

@@ -1,18 +1,32 @@
 import { useState } from 'react'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material"
+import useFetch from '../../../hooks/useFetch';
+import { createEmployee } from '../../../api/employee';
+import { useEmployeeContext } from '../../../contexts/EmployeeContext';
+
+const initialState = {
+     firstName: '',
+     lastName: '',
+     middleName: '',
+     jobTitle: '',
+     office: '',
+     birthDate: '',
+     jobStatus: '',
+     email: ''
+}
 
 export default function EmployeeFormDialog() {
+
      const [openEmployeeForm, setOpenEmployeeForm] = useState(false);
-     const [formData, setFormData] = useState({
-          firstName: '',
-          lastName: '',
-          middleName: '',
-          jobTitle: '',
-          office: '',
-          birthDate: '',
-          jobStatus: '',
-          email: ''
-     })
+     const [formData, setFormData] = useState(initialState);
+     const { dispatch } = useEmployeeContext();
+     const { trigger, loading } = useFetch(createEmployee, {
+          onSuccess: () => {
+               setOpenEmployeeForm(false);
+               setFormData(initialState);
+               dispatch({ type: 'REFRESH' });
+          }
+     });
      const handleFormClose = () => {
           setOpenEmployeeForm(false);
      }
@@ -27,15 +41,21 @@ export default function EmployeeFormDialog() {
                [name]: value
           }));
      }
+
+     const handleSubmit = (e) => {
+          e.preventDefault();
+          trigger(formData);
+     }
      return (
           <>
-               <Button onClick={handleFormOpen} variant="outlined">New Employee</Button>
+               <Button onClick={handleFormOpen} variant="contained">New Employee</Button>
                <Dialog
                     open={openEmployeeForm}
                     onClose={handleFormClose}
                     slotProps={{
                          paper: {
                               component: 'form',
+                              onSubmit: handleSubmit
                          },
                     }}
                >
@@ -107,7 +127,7 @@ export default function EmployeeFormDialog() {
                     </DialogContent>
                     <DialogActions>
                          <Button onClick={handleFormClose}>Cancel</Button>
-                         <Button type="submit">Save</Button>
+                         <Button loading={loading} type="submit">Save</Button>
                     </DialogActions>
                </Dialog>
           </>

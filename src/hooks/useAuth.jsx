@@ -1,9 +1,10 @@
 import { createContext, useContext, useReducer } from 'react'
 
 const initialState = {
-     user: null,
      isAuthenticated: false,
-     loading: false
+     user: null,
+     loading: true, // loading during token verification
+     authChecked: false, // <- NEW
 };
 
 const reducer = (state, action) => {
@@ -11,18 +12,23 @@ const reducer = (state, action) => {
           case 'LOGIN':
                return {
                     ...state,
-                    user: action.payload,
                     isAuthenticated: true,
-                    loading: false
+                    user: action.payload,
+                    loading: false,
+                    authChecked: true,
                };
           case 'LOGOUT':
                return {
-                    ...initialState
+                    ...state,
+                    isAuthenticated: false,
+                    user: null,
+                    loading: false,
+                    authChecked: true,
                };
           case 'BEGIN_LOADING':
                return {
                     ...state,
-                    loading: true
+                    loading: true,
                };
           default:
                return state;

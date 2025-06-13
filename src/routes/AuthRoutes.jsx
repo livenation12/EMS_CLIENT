@@ -19,7 +19,8 @@ export default function AuthRoutes() {
     dispatch({ type: 'BEGIN_LOADING' });
     trigger()
   }, [])
-  if (state.loading) {
+  if (state.loading || !state.authChecked) {
+    console.log("Is authenticated:", state.isAuthenticated);
     return (
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -29,9 +30,7 @@ export default function AuthRoutes() {
       </Backdrop>
     );
   }
-  if (state.isAuthenticated) {
-    return <Navigate to="/" />;
-  }
-  return <Outlet />;
+  return state.isAuthenticated ? <Navigate to="/" replace /> : <Outlet />;
+
 
 }
