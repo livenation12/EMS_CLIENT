@@ -1,6 +1,10 @@
 import { createContext, useContext, useReducer } from "react";
 import { Outlet } from "react-router-dom";
 
+const initialState = {
+  refresh: false,
+  checkedEmployees: []
+}
 export const EmployeeContext = createContext();
 
 const employeeReducer = (state, action) => {
@@ -10,13 +14,31 @@ const employeeReducer = (state, action) => {
         ...state,
         refresh: !state.refresh
       };
+    case 'SET_CHECKED_EMPLOYEES':
+      return {
+        ...state,
+        checkedEmployees: action.payload
+      }
+    case 'RESET_CHECKED_EMPLOYEES':
+      return {
+        ...state,
+        checkedEmployees: []
+      }
+    case 'TOGGLE_CHECKED_EMPLOYEE': {
+      const newSet = new Set(state.checkedEmployees);
+      if (newSet.has(action.payload)) {
+        newSet.delete(action.payload);
+      } else {
+        newSet.add(action.payload);
+      }
+      return {
+        ...state,
+        checkedEmployees: newSet,
+      };
+    }
     default:
       return state;
   }
-}
-
-const initialState = {
-  refresh: false,
 }
 
 export const EmployeeContextProvider = () => {

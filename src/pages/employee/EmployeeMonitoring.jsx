@@ -1,117 +1,117 @@
 
-import { Box, Avatar, Card, CardContent, CardHeader, Grid, IconButton, FormGroup, FormControlLabel, Checkbox, Typography, Button, Snackbar } from "@mui/material"
+import { Box, Avatar, Card, CardContent, CardHeader, Grid, FormGroup, FormControlLabel, Checkbox, Typography, Button, Snackbar, Chip, Tooltip } from "@mui/material"
 import { readEmployees } from "../../api/employee";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useFetch from "../../hooks/useFetch";
 import useEmployeeStatusSocket from "../../hooks/useEmployeeStatusSocket";
-import { Circle } from "@mui/icons-material";
-import { updateEmployeeStatus } from "../../api/employee-status";
-import { useSnackbar } from "../../contexts/SnackbarContext";
-
+import EmployeeStatusUpdateList from "./features/EmployeeStatusUpdateList";
+import MonitorUpdateDialog from "./features/MonitorUpdateDialog";
+import { useEmployeeContext } from "../../contexts/EmployeeContext";
 export default function EmployeeMonitoring() {
+  const { state, dispatch } = useEmployeeContext();
   const [employees, setEmployees] = useState([]);
-  const [checkedEmployees, setCheckedEmployees] = useState([]);
-  const snackBar = useSnackbar();
   const { loading, trigger } = useFetch(readEmployees, {
     onSuccess: (res) => {
       setEmployees(res.data.content);
     }
   });
-  const { trigger: update } = useFetch(updateEmployeeStatus, {
-    onSuccess: (res) => {
-      snackBar(res.message || 'Successfully updated.');
-      setCheckedEmployees([]);
-    }
-  })
-
   useEffect(() => {
     trigger()
   }, []);
 
-  useEmployeeStatusSocket((updates) => {
+  const handleStatusUpdate = useCallback((updates) => {
     setEmployees(prev => {
       const employeeMap = new Map(prev.map(emp => [emp.id, emp]));
+      console.log("new updates", updates);
+
       updates.forEach(update => {
         const emp = employeeMap.get(update.employeeId);
         if (emp) {
           employeeMap.set(update.employeeId, {
             ...emp,
-            currentStatus: update.status,
+            status: update.status,
             task: update.task,
           });
         }
       });
       return Array.from(employeeMap.values());
     });
-  });
+  }, [setEmployees]);
 
+  useEmployeeStatusSocket(handleStatusUpdate);
 
   const handleSelectAllChange = (e) => {
     const isChecked = e.target.checked;
     if (isChecked) {
-      setCheckedEmployees(employees.map((emp) => emp.id));
+      dispatch({ type: 'SET_CHECKED_EMPLOYEES', payload: employees.map(emp => Number(emp.id)) });
     } else {
-      setCheckedEmployees([]);
+      dispatch({ type: 'RESET_CHECKED_EMPLOYEES' });
     }
   }
-
   const handleCbChange = (e) => {
-    const isChecked = e.target.checked;
     const employeeId = Number(e.target.value);
-    if (isChecked) {
-      setCheckedEmployees([...checkedEmployees, employeeId]);
-    } else {
-      setCheckedEmployees(checkedEmployees.filter((id) => id !== employeeId));
-    }
+    dispatch({ type: 'TOGGLE_CHECKED_EMPLOYEE', payload: employeeId });
   }
-
-  const handleUpdate = () => {
-    update({ employeeIds: checkedEmployees, status: "TesT", task: "Idle" });
-  }
-
   return (
     <Box>
-      <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
+      <Box sx={{ display: "flex", justifyContent: "", width: "100%", mb: 2 }}>
         <FormGroup>
-          <FormControlLabel control={<Checkbox checked={checkedEmployees.length === employees.length} />} onChange={handleSelectAllChange} label="Select All" />
+          <FormControlLabel
+            control={<Checkbox checked={new Set(state.checkedEmployees).size === employees.length} />}
+            onChange={handleSelectAllChange}
+            label="Select All"
+          />
         </FormGroup>
-        <Button variant="contained" onClick={handleUpdate}>Update</Button>
+        <Box>
+          <MonitorUpdateDialog />
+        </Box>
       </Box>
       <Grid container spacing={2}>
-        {
-          loading ? <Box sx={{ textAlign: "center", mt: 5 }}>Loading...</Box> :
-            employees.length > 0 && employees.map((employee) => (
-              <Grid size={{
-                xs: 12,
-                md: 6,
-                lg: 3,
-              }} key={employee.id}>
-                <Card sx={{ width: "100%" }}>
-                  <CardHeader
-                    avatar={
-                      <Avatar>
-                        {employee.firstName.charAt(0).toUpperCase() + employee.lastName.charAt(0).toUpperCase()}
-                      </Avatar>
-                    }
-                    action={
-                      <Checkbox value={employee.id} onChange={handleCbChange} checked={checkedEmployees.includes(employee.id)} />
-                    }
-                    title={employee.fullName}
-                    subheader={employee.email}
-                  />
-                  <CardContent>
-                    <Typography sx={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: .5
-                    }} variant="body2" color="text.secondary">
-                      <Circle /> {employee.currentStatus}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))
-        }
+        <Grid container size={{ lg: 12, xl: 8 }} spacing={2}>
+          {
+            loading ? <Box sx={{ textAlign: "center" }}>Loading...</Box> :
+              employees.length > 0 && employees.map((employee) => (
+                <Grid size={{
+                  sm: 12,
+                  md: 4,
+                }} key={employee.id}>
+                  <Card sx={{ width: "100%" }}>
+                    <CardHeader
+                      avatar={
+                        <Tooltip title={employee.fullName}>
+                          <Avatar>
+                            {employee.firstName.charAt(0).toUpperCase() + employee.lastName.charAt(0).toUpperCase()}
+                          </Avatar>
+                        </Tooltip>
+                      }
+                      action={
+                        <Checkbox value={employee.id} onChange={handleCbChange} checked={new Set(state.checkedEmployees).has(employee.id)} />
+                      }
+                      title={employee.fullName}
+                      subheader={employee.email}
+                    />
+                    <CardContent>
+                      <Typography
+                        component="div"
+                        sx={{ display: "inline-flex", alignItems: "center", gap: 0.5 }}
+                        variant="body2"
+                        color="text.secondary"
+                      >
+                        <Chip
+                          component={Button}
+                          sx={{ bgcolor: employee?.status?.colorCode || "gray", color: "black" }}
+                          label={employee?.status?.label}
+                        />
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              ))
+          }
+        </Grid>
+        <Grid size={{ xs: 12, sm: 12, md: 12, lg: 4 }}>
+          <EmployeeStatusUpdateList />
+        </Grid>
       </Grid>
     </Box>
   )
