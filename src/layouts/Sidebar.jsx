@@ -6,7 +6,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { People } from '@mui/icons-material';
+import { Campaign, EventNote, People, Task } from '@mui/icons-material';
 import useFetch from '../hooks/useFetch';
 import { logout } from '../api/auth';
 import useAuth from '../hooks/useAuth';
@@ -31,6 +31,9 @@ export default function Sidebar({ children, window }) {
      const menuItems = [
           { text: 'Dashboard', icon: <DashboardIcon /> , path: '/dashboard' },
           { text: 'Employees', icon: <People />, path: '/employees' },
+          { text: 'Tasks', icon: <Task />, path: '/tasks' },
+          { text: 'Schedules', icon: <EventNote />, path: '/schedules' },
+          { text: 'Notices', icon: <Campaign />, path: '/notices' },
      ];
 
      const drawer = (

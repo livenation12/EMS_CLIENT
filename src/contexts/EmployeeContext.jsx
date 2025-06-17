@@ -33,7 +33,7 @@ const employeeReducer = (state, action) => {
       }
       return {
         ...state,
-        checkedEmployees: newSet,
+        checkedEmployees: Array.from(newSet),
       };
     }
     default:

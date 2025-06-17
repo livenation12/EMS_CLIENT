@@ -5,6 +5,7 @@ import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import AuthRoutes from "./AuthRoutes";
 import employeeRoutes from "./EmployeeRoutes";
+import TaskLayout from "../layouts/TaskLayout";
 const router = createBrowserRouter([
      //Authentication routes
      {
@@ -38,7 +39,19 @@ const router = createBrowserRouter([
                               path: "/dashboard",
                               element: "Dashboard",
                          },
-                         employeeRoutes
+                         employeeRoutes,
+                         {
+                              path: "/tasks",
+                              element: <TaskLayout />,
+                         },
+                         {
+                              path: "/schedules",
+                              element: "Schedules",
+                         },
+                         {
+                              path: "/notices",
+                              element: "Notices",
+                         }
                     ]
                }
           ]

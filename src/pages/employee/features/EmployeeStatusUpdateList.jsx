@@ -1,17 +1,30 @@
 import { Avatar, Box, Divider, List, ListItem, ListItemAvatar, ListItemText, ListSubheader, Tooltip, Typography } from '@mui/material'
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import useFetch from '../../../hooks/useFetch';
 import { readLatestStatus } from '../../../api/employee-status';
 import { DateRange } from '@mui/icons-material';
-
+import useEmployeeStatusSocket from '../../../hooks/useEmployeeStatusSocket';
 export default function EmployeeStatusUpdateList() {
-  const { trigger, data, loading } = useFetch(readLatestStatus, {})
+  const [list, setList] = useState([]);
+  const { trigger, loading } = useFetch(readLatestStatus, {
+    onSuccess: (res) => {      
+      setList(res.data);
+    }
+  })
   useEffect(() => {
     trigger();
   }, []);
+
+  const handleStatusUpdate = useCallback((updates) => {
+    setList(prev => [...updates, ...prev]);
+  });
+
+  useEmployeeStatusSocket(handleStatusUpdate);
+
   if (loading) {
     return <Box sx={{ textAlign: "center", mt: 5 }}>Loading...</Box>
   }
+
   return (
     <>
       <List sx={{ width: '100%', height: 450, overflowY: 'auto', bgcolor: 'background.paper' }}
@@ -21,7 +34,7 @@ export default function EmployeeStatusUpdateList() {
           </ListSubheader>
         }
       >
-        {data && data.map((item, index) => (
+        {list && list.map((item, index) => (
           <React.Fragment key={index}>
             <ListItem alignItems="flex-start">
               <ListItemAvatar>
@@ -43,11 +56,9 @@ export default function EmployeeStatusUpdateList() {
                       <DateRange fontSize='small' /> {item.timestamp}
                     </Typography>
                   </Typography>
-
                 }
                 secondary={
                   item.task
-
                 }
               />
             </ListItem>

@@ -67,7 +67,7 @@ export default function EmployeeMonitoring() {
         </Box>
       </Box>
       <Grid container spacing={2}>
-        <Grid container size={{ lg: 12, xl: 8 }} spacing={2}>
+        <Grid container size={{ xs: 12, lg: 8 }} spacing={2}>
           {
             loading ? <Box sx={{ textAlign: "center" }}>Loading...</Box> :
               employees.length > 0 && employees.map((employee) => (
@@ -109,7 +109,7 @@ export default function EmployeeMonitoring() {
               ))
           }
         </Grid>
-        <Grid size={{ xs: 12, sm: 12, md: 12, lg: 4 }}>
+        <Grid size={{ xs: 12, lg: 4 }}>
           <EmployeeStatusUpdateList />
         </Grid>
       </Grid>

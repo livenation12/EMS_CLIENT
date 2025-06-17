@@ -47,7 +47,7 @@ export default function MonitorUpdateDialog() {
   useEffect(() => {
     trigger();
   }, [])
-
+  
   return (
     <>
       <Button onClick={handleDialogOpen} disabled={state.checkedEmployees.length === 0} variant="contained" startIcon={<Send />}> Dispatch</Button>
