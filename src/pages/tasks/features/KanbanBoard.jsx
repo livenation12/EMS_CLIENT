@@ -68,9 +68,9 @@ const KanbanBoard = () => {
 
   return (
     <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-      <Grid container spacing={2} padding={2}>
+      <Grid container spacing={2}>
         {Object.entries(columns).map(([columnId, tasks]) => (
-          <Grid item size={{ xs: 12, md: 4 }} key={columnId}>
+          <Grid size={{ xs: 12, lg: 4 }} key={columnId}>
             <SortableContext
               items={tasks.map(task => task.id)}
               strategy={verticalListSortingStrategy}

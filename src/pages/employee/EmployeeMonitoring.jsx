@@ -22,8 +22,6 @@ export default function EmployeeMonitoring() {
   const handleStatusUpdate = useCallback((updates) => {
     setEmployees(prev => {
       const employeeMap = new Map(prev.map(emp => [emp.id, emp]));
-      console.log("new updates", updates);
-
       updates.forEach(update => {
         const emp = employeeMap.get(update.employeeId);
         if (emp) {
