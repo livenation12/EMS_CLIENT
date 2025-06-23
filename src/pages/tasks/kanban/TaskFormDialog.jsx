@@ -109,10 +109,10 @@ export default function TaskFormDialog() {
                               renderInput={(params) => (
                                    <TextField
                                         {...params}
-                                        placeholder="Select Status"
-                                        label="Status"
-                                        name="status"
-                                        margin="dense"
+                                        placeholder="Select Assign To"
+                                        label="Assign To"
+                                        name="assignedToId"
+                                        margin="normal"
                                    />
                               )}
                          />

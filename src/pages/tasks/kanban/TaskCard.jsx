@@ -1,7 +1,6 @@
-import React from 'react';
-import { Card, CardContent, Typography } from '@mui/material';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { Card, CardContent, Typography } from '@mui/material';
 
 const TaskCard = ({ task }) => {
   const {
@@ -21,9 +20,10 @@ const TaskCard = ({ task }) => {
   };
 
   return (
-    <Card ref={setNodeRef} sx={{ ...style }} {...attributes} {...listeners}>
+    <Card ref={setNodeRef} style={style} {...attributes} {...listeners}>
       <CardContent>
-        <Typography variant="body1">{task.title}</Typography>
+        <Typography variant="subtitle1">{task.title}</Typography>
+        <Typography variant="body2">{task.description}</Typography>
       </CardContent>
     </Card>
   );
