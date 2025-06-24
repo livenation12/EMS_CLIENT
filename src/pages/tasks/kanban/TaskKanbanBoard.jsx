@@ -37,70 +37,99 @@ const TaskKanbanBoard = () => {
   const handleDragEnd = ({ active, over }) => {
     if (!over || active.id === over.id) return;
 
-    // 1. Find the source column
     const fromColumnIndex = columns.findIndex(col =>
       col.tasks.some(task => task.id === active.id)
     );
 
-    // 2. Find the target column (task or empty drop)
     const toColumnIndex = columns.findIndex(col =>
       col.tasks.some(task => task.id === over.id)
     );
+
+    // Fallback in case 'over' is a column drop zone
     const fallbackToCol = columns.findIndex(col => col.id === over.id);
     const targetColumnIndex = toColumnIndex !== -1 ? toColumnIndex : fallbackToCol;
 
     if (fromColumnIndex === -1 || targetColumnIndex === -1) return;
 
-    // 3. Get dragged task
     const fromColumn = columns[fromColumnIndex];
     const toColumn = columns[targetColumnIndex];
+
     const draggedTaskIndex = fromColumn.tasks.findIndex(task => task.id === active.id);
     const draggedTask = fromColumn.tasks[draggedTaskIndex];
 
-    // 4. Clone the task lists
+    // Clone task arrays
     const newFromTasks = [...fromColumn.tasks];
     const newToTasks =
       fromColumnIndex === targetColumnIndex
         ? [...fromColumn.tasks]
         : [...toColumn.tasks];
 
-    // 5. Remove dragged task from original location
+    // Remove the dragged task from its original column
     newFromTasks.splice(draggedTaskIndex, 1);
 
-    if (fromColumnIndex === targetColumnIndex) {
-      // Reordering within the same column
-      const overIndex = newToTasks.findIndex(task => task.id === over.id);
-      const insertIndex = draggedTaskIndex < overIndex ? overIndex - 1 : overIndex;
+    let newPosition = 0;
 
-      // Remove from toTasks too (same array!) to prevent duplication
-      newToTasks.splice(draggedTaskIndex, 1);
-      newToTasks.splice(insertIndex, 0, draggedTask);
+    if (fromColumnIndex === targetColumnIndex) {
+      // Same column reordering
+      newToTasks.splice(draggedTaskIndex, 1); // Remove first to prevent index shift
+      const overIndex = newToTasks.findIndex(task => task.id === over.id);
+      newToTasks.splice(overIndex, 0, draggedTask);
+
+      const before = newToTasks[overIndex - 1];
+      const after = newToTasks[overIndex + 1];
+      const beforePos = before?.position ?? 0;
+      const afterPos = after?.position ?? beforePos + 100;
+      newPosition = (beforePos + afterPos) / 2;
     } else {
-      // Moving to another column
-      newToTasks.push(draggedTask);
+      // Cross-column move
+      const overIndex = newToTasks.findIndex(task => task.id === over.id);
+
+      if (overIndex >= 0) {
+        newToTasks.splice(overIndex, 0, draggedTask);
+
+        const before = newToTasks[overIndex - 1];
+        const after = newToTasks[overIndex + 1];
+        const beforePos = before?.position ?? 0;
+        const afterPos = after?.position ?? beforePos + 100;
+        newPosition = (beforePos + afterPos) / 2;
+      } else {
+        // Drop at end of column
+        newToTasks.push(draggedTask);
+        const lastTask = newToTasks[newToTasks.length - 2]; // before pushed one
+        newPosition = lastTask ? lastTask.position + 100 : 100;
+      }
     }
 
-    // 6. Update the columns
+    // Update state
     const updatedColumns = [...columns];
+
     updatedColumns[fromColumnIndex] = {
       ...fromColumn,
       tasks: newFromTasks,
     };
+
     updatedColumns[targetColumnIndex] = {
       ...toColumn,
-      tasks: newToTasks,
+      tasks: newToTasks.map(task =>
+        task.id === draggedTask.id
+          ? { ...task, position: newPosition }
+          : task
+      ),
     };
 
-    // 7. Apply the new state
     setColumns(updatedColumns);
-    console.log(toColumn);
 
-    // 8. Update the backend
+    // Backend update
     update(draggedTask.id, {
-      statusId: toColumn.id,
-      position: newToTasks.findIndex(task => task.id === draggedTask.id)
+      statusId: Number(toColumn.id),
+      position: parseFloat(newPosition),
+      id: Number(draggedTask.id),
     });
+    
   };
+  
+  console.log(columns[0]?.tasks);
+
 
 
   useEffect(() => {

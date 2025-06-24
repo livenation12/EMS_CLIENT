@@ -5,7 +5,8 @@ import { Circle } from '@mui/icons-material';
 
 const Column = ({ column }) => {
   const { setNodeRef } = useDroppable({ id: column.id });
-  console.log('Column:', column);
+  const sortedTasks = column.tasks.sort((a, b) => a.position - b.position);
+  console.log('sortedTasks', sortedTasks);
   
   return (
     <Paper
@@ -13,17 +14,17 @@ const Column = ({ column }) => {
       elevation={3}
       sx={{
         padding: 2,
-        minHeight: 400,
+        height: 'calc(100vh - 260px)',
         minWidth: 400,
-        maxHeight: 600,
         overflowY: 'auto',
+        overflowX: 'hidden',
       }}
     >
       <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
         <Circle sx={{ mr: 1, color: column.colorCode }} /> {column.label}
       </Typography>
       <Stack spacing={1}>
-        {column?.tasks.map((task) => (
+        {sortedTasks.map((task) => (
           <TaskCard key={task.id} task={task} />
         ))}
       </Stack>
