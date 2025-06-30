@@ -6,6 +6,7 @@ import Register from "../pages/auth/Register";
 import AuthRoutes from "./AuthRoutes";
 import employeeRoutes from "./EmployeeRoutes";
 import taskRoutes from "./TaskRoutes";
+import scheduleRoutes from "./ScheduleRoutes";
 const router = createBrowserRouter([
      //Authentication routes
      {
@@ -41,10 +42,7 @@ const router = createBrowserRouter([
                          },
                          employeeRoutes,
                          taskRoutes,
-                         {
-                              path: "/schedules",
-                              element: "Schedules",
-                         },
+                         scheduleRoutes,
                          {
                               path: "/notices",
                               element: "Notices",

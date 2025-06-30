@@ -1,6 +1,6 @@
 
 import { Box, Avatar, Card, CardContent, CardHeader, Grid, FormGroup, FormControlLabel, Checkbox, Typography, Button, Snackbar, Chip, Tooltip } from "@mui/material"
-import { readEmployees } from "../../api/employee";
+import { readEmployeeList } from "../../api/employee";
 import { useCallback, useEffect, useState } from "react";
 import useFetch from "../../hooks/useFetch";
 import useEmployeeStatusSocket from "../../hooks/useEmployeeStatusSocket";
@@ -10,7 +10,7 @@ import { useEmployeeContext } from "../../contexts/EmployeeContext";
 export default function EmployeeMonitoring() {
   const { state, dispatch } = useEmployeeContext();
   const [employees, setEmployees] = useState([]);
-  const { loading, trigger } = useFetch(readEmployees, {
+  const { loading, trigger } = useFetch(readEmployeeList, {
     onSuccess: (res) => {
       setEmployees(res.data.content);
     }

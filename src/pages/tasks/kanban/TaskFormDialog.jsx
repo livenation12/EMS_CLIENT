@@ -3,7 +3,7 @@ import { Autocomplete, Box, Button, Dialog, DialogActions, DialogContent, Dialog
 import useFetch from '../../../hooks/useFetch';
 import { createTask } from '../../../api/task';
 import { Person } from '@mui/icons-material';
-import { readEmployees } from '../../../api/employee';
+import { readEmployeeList } from '../../../api/employee';
 
 const initialState = {
      title: '',
@@ -21,7 +21,7 @@ export default function TaskFormDialog() {
                setFormData(initialState);
           }
      });
-     const { trigger: fetchEmployees, data: employees } = useFetch(readEmployees);
+     const { trigger: fetchEmployees, data: employees } = useFetch(readEmployeeList);
 
      const handleFormClose = () => {
           setTaskOpenDialog(false);

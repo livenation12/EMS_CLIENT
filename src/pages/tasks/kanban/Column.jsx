@@ -6,7 +6,6 @@ import { Circle } from '@mui/icons-material';
 const Column = ({ column }) => {
   const { setNodeRef } = useDroppable({ id: column.id });
   const sortedTasks = column.tasks.sort((a, b) => a.position - b.position);
-  console.log('sortedTasks', sortedTasks);
   
   return (
     <Paper
@@ -15,7 +14,7 @@ const Column = ({ column }) => {
       sx={{
         padding: 2,
         height: 'calc(100vh - 260px)',
-        minWidth: 400,
+        width: '100%',
         overflowY: 'auto',
         overflowX: 'hidden',
       }}

@@ -128,10 +128,6 @@ const TaskKanbanBoard = () => {
     
   };
   
-  console.log(columns[0]?.tasks);
-
-
-
   useEffect(() => {
     // Fetch initial data
     trigger();
@@ -148,7 +144,7 @@ const TaskKanbanBoard = () => {
           columns.length <= 0 ? <Typography variant="h6" sx={{ width: '100%', textAlign: 'center' }}>Add task status to start</Typography>
             :
             columns.map((column) => (
-              <Grid size={{ lg: 4, xs: 12 }} key={column.id}>
+              <Grid size={{ md: 4, xs: 12 }} key={column.id}>
                 <SortableContext
                   items={column.tasks.map((task) => task.id)}
                   strategy={verticalListSortingStrategy}

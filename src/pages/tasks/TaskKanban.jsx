@@ -1,6 +1,7 @@
 import { Box } from '@mui/material'
 import TaskKanbanBoard from './kanban/TaskKanbanBoard'
 import TaskFormDialog from './kanban/TaskFormDialog'
+import TaskLogList from './kanban/TaskLogList'
 
 export default function TaskKanban() {
      return (
@@ -13,6 +14,7 @@ export default function TaskKanban() {
                     <TaskFormDialog />
                </Box>
                <TaskKanbanBoard />
+               <TaskLogList />
           </Box>
      )
 }

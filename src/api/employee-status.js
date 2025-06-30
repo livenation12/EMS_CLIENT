@@ -8,6 +8,6 @@ export const updateEmployeeStatus = async (payload) => {
 }
 
 export const readLatestStatus = async () => {
-     const response = await axiosConfig.get(`${baseUri}/latest-status`);
+     const response = await axiosConfig.get(`${baseUri}/latest`);
      return response.data;
 }

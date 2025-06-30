@@ -1,5 +1,5 @@
 import axiosConfig from "./axios-config";
-export const readEmployees = async () => {
+export const readEmployeeList = async () => {
      const response = await axiosConfig.get("/employees");
      return response.data;
 }

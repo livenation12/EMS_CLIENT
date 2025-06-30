@@ -1,0 +1,8 @@
+{
+     /*All api response was wrapped in ApiResponse */
+     "ApiResponse" : {
+          "status": "string", // "success" or "error"
+          "message": "string", // A message describing the result of the API call
+          "data": {}
+     }
+}

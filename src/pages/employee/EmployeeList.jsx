@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { readEmployees } from "../../api/employee"
+import { readEmployeeList } from "../../api/employee"
 import useFetch from "../../hooks/useFetch"
 import { useEmployeeContext } from "../../contexts/EmployeeContext";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -9,7 +9,7 @@ import { useState } from "react";
 
 export default function EmployeeList() {
   const { state, dispatch } = useEmployeeContext();
-  const { data, loading, trigger } = useFetch(readEmployees, {});
+  const { data, loading, trigger } = useFetch(readEmployeeList, {});
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
