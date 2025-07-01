@@ -64,7 +64,7 @@ export default function TaskFormDialog() {
                          },
                     }}
                >
-                    <DialogTitle>New Employee</DialogTitle>
+                    <DialogTitle>New Task</DialogTitle>
                     <DialogContent>
                          <TextField
                               label="Title"
@@ -116,7 +116,8 @@ export default function TaskFormDialog() {
                                    />
                               )}
                          />
-                         <TextField label="Due Date"
+                         <TextField 
+                              helperText="Due Date *"
                               type="date"
                               name="dueDate"
                               value={formData.dueDate}

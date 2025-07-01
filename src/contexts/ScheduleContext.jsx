@@ -6,7 +6,7 @@ export const ScheduleContext = createContext();
 
 export const ScheduleContextProvider = () => {
      return (
-          <ScheduleContext.Provider>
+          <ScheduleContext.Provider value={{}}>
                <Outlet />
           </ScheduleContext.Provider>
      );

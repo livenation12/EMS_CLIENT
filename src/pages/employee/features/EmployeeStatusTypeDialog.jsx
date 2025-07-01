@@ -77,8 +77,7 @@ export default function EmployeeStatusTypeDialog() {
                               onChange={handleChange}
                               variant="outlined"
                               required
-                              InputLabelProps={{ shrink: true }} // 👈 important for color input label
-
+                              InputLabelProps={{ shrink: true }} // important for color input label
                          />
                     </DialogContent>
                     <DialogActions>

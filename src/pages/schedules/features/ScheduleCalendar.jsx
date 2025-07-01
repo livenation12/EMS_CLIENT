@@ -13,14 +13,22 @@ const dummyEvents = [
      }
 ];
 export default function ScheduleCalendar() {
+     const handleChangeRange = ({ start, end }) => {
+          console.log("start: " + start, "end: " + end);
+          if (start === undefined || end === undefined) return
+     };
      return (
           <Box>
+               <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
+                    
+               </Box>
                <Calendar
                     localizer={localizer}
                     startAccessor="start"
                     endAccessor="end"
                     style={{ height: 600, width: '100%' }}
                     events={dummyEvents}
+                    onRangeChange={handleChangeRange}
                />
           </Box>
      );
