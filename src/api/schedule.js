@@ -24,11 +24,12 @@ export const createSchedule = async (payload) => {
 /**
  * Read a list of schedules that fall within the given range.
  *
- * @param {{ startDate: Date, endDate: Date }} payload
+ * @param { startDate: Date, endDate: Date }}
  * @return {Promise<ApiResponse<Schedule[]>>}
  */
-export const readSchuduleList = async (payload) => {
-     const urlParams = new URLSearchParams(payload);
-     const response = await axiosConfig.post(`${baseUri}/by-range?${urlParams}`,);
+export const readSchuduleList = async ({ startDate, endDate }) => {
+     const params = { startDate: startDate.toISOString(), endDate: endDate.toISOString() };
+     const urlParams = new URLSearchParams(params);
+     const response = await axiosConfig.get(`${baseUri}/by-range?${urlParams}`,);
      return response.data;
 };

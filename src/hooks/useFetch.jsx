@@ -10,7 +10,7 @@ export default function useFetch(service, { onSuccess, onError, onFinish } = {})
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
-
+  const [dependency, setDependency] = useState(0);
   const trigger = useCallback(async (...args) => {
     setLoading(true);
     setError(null);
@@ -18,6 +18,9 @@ export default function useFetch(service, { onSuccess, onError, onFinish } = {})
       const response = await service(...args);
       setData(response.data);
       onSuccess?.(response);
+      if (!response.success) {
+        setError(response.data);
+      }
     } catch (err) {
       setError(err?.response?.data || err?.message || 'An error occurred');
       onError?.(err?.response?.data || err?.message || 'An error occurred');
@@ -25,7 +28,10 @@ export default function useFetch(service, { onSuccess, onError, onFinish } = {})
       setLoading(false);
       onFinish?.();
     }
-  }, [service, onSuccess, onError, onFinish]);
+  }, [service, onSuccess, onError, onFinish, dependency]);
 
-  return { loading, error, data, trigger };
+  const refresh = useCallback(() => {
+    setDependency((prev) => prev + 1);
+  }, []);
+  return { loading, error, data, trigger, refresh, dependency };
 }

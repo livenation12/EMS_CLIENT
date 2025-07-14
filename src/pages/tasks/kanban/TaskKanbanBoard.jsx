@@ -15,9 +15,11 @@ import { Grid, Typography } from '@mui/material';
 import Column from './Column';
 import useFetch from '../../../hooks/useFetch';
 import { readTaskKanban, updateTask } from '../../../api/task';
+import { useTaskContext } from '../../../contexts/TaskContext';
 
 
 const TaskKanbanBoard = () => {
+  const { state } = useTaskContext();
   const [columns, setColumns] = useState([]);
   const sensors = useSensors(useSensor(PointerSensor));
   const { trigger, loading } = useFetch(readTaskKanban, {
@@ -125,13 +127,13 @@ const TaskKanbanBoard = () => {
       position: parseFloat(newPosition),
       id: Number(draggedTask.id),
     });
-    
+
   };
-  
+
   useEffect(() => {
     // Fetch initial data
     trigger();
-  }, []);
+  }, [state.kanban.refresh]);
 
   return (
     <DndContext

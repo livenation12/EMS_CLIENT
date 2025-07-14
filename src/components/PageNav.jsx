@@ -1,20 +1,14 @@
-import { Monitor, List, Settings } from '@mui/icons-material';
 import { Box, Button, Stack, Toolbar } from '@mui/material'
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom'
 
-const links = [
-     { label: 'List', to: '/employees/list', icon: <List /> },
-     { label: 'Monitor', to: '/employees/monitor', icon: <Monitor /> },
-     { label: 'Manage', to: '/employees/manage', icon: <Settings /> },
-];
-
-export default function EmployeeNav() {
+export default function PageNav({ links = [] }) {
      return (
           <Box component="nav" sx={{ borderBottom: '1px solid #ccc', mb: 2 }}>
                <Toolbar>
                     <Stack direction="row" spacing={2}>
                          {links.map((link) => (
                               <Button
+                                   startIcon={link.icon}
                                    key={link.to}
                                    component={NavLink}
                                    to={link.to}
@@ -29,8 +23,7 @@ export default function EmployeeNav() {
                                              borderRadius: 0,
                                         },
                                    }}
-                              >
-                                   {link.icon} {link.label}
+                              > {link.label}
                               </Button>
                          ))}
                     </Stack>

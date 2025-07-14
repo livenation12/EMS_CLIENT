@@ -7,6 +7,8 @@ import AuthRoutes from "./AuthRoutes";
 import employeeRoutes from "./EmployeeRoutes";
 import taskRoutes from "./TaskRoutes";
 import scheduleRoutes from "./ScheduleRoutes";
+import NotFound from "../pages/NotFound";
+import Notice from "../pages/notices/Notice";
 const router = createBrowserRouter([
      //Authentication routes
      {
@@ -45,11 +47,15 @@ const router = createBrowserRouter([
                          scheduleRoutes,
                          {
                               path: "/notices",
-                              element: "Notices",
+                              element: <Notice />,
                          }
                     ]
                }
           ]
+     },
+     {
+          path: "*",
+          element: <NotFound />,
      }
 
 

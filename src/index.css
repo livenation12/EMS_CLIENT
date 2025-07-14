@@ -3,3 +3,12 @@
      padding: 0;
      box-sizing: border-box;
 }
+
+.rbc-calendar {
+     font-family: 'Roboto', sans-serif;
+     font-size: 16px;
+}
+
+.rbc-header {
+     padding-block: 10px !important;
+}

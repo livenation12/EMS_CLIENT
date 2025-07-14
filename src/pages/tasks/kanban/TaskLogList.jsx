@@ -2,8 +2,10 @@ import { Box, Divider, List, ListItem, ListItemText, Typography } from '@mui/mat
 import React, { useEffect, useState } from 'react'
 import useFetch from '../../../hooks/useFetch';
 import { readLatestTaskLogList } from '../../../api/task-log';
+import { useTaskContext } from '../../../contexts/TaskContext';
 
 export default function TaskLogList() {
+     const { state } = useTaskContext();
      const [logs, setLogs] = useState([]);
      const { trigger, loading } = useFetch(readLatestTaskLogList, {
           onSuccess: (res) => {
@@ -15,7 +17,7 @@ export default function TaskLogList() {
                pageNumber: 0
           }
           trigger(params);
-     }, []);
+     }, [state.logs.refresh]);
 
      return (
           <Box>

@@ -4,6 +4,7 @@ import useFetch from '../../../hooks/useFetch';
 import { createTask } from '../../../api/task';
 import { Person } from '@mui/icons-material';
 import { readEmployeeList } from '../../../api/employee';
+import { useTaskContext } from '../../../contexts/TaskContext';
 
 const initialState = {
      title: '',
@@ -13,12 +14,15 @@ const initialState = {
 }
 
 export default function TaskFormDialog() {
+     const { dispatch } = useTaskContext();
      const [openTaskDialog, setTaskOpenDialog] = useState(false);
      const [formData, setFormData] = useState(initialState);
      const { trigger, loading } = useFetch(createTask, {
           onSuccess: () => {
                setTaskOpenDialog(false);
                setFormData(initialState);
+               dispatch({ type: 'REFRESH_KANBAN' });
+               dispatch({ type: 'REFRESH_TASK_LOGS' });
           }
      });
      const { trigger: fetchEmployees, data: employees } = useFetch(readEmployeeList);
@@ -116,7 +120,7 @@ export default function TaskFormDialog() {
                                    />
                               )}
                          />
-                         <TextField 
+                         <TextField
                               helperText="Due Date *"
                               type="date"
                               name="dueDate"
