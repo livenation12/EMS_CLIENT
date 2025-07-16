@@ -60,7 +60,7 @@ export default function EmployeeStatusTypeDialog() {
                               autoFocus
                               type="text"
                               name="label"
-                              value={formData.firstName}
+                              value={formData.label}
                               margin="normal"
                               onChange={handleChange}
                               fullWidth
@@ -77,7 +77,6 @@ export default function EmployeeStatusTypeDialog() {
                               onChange={handleChange}
                               variant="outlined"
                               required
-                              InputLabelProps={{ shrink: true }} // important for color input label
                          />
                     </DialogContent>
                     <DialogActions>

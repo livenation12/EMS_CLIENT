@@ -1,9 +1,11 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, TextField, Typography } from '@mui/material'
-import { useState } from 'react'
+import { Autocomplete, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, TextField, Typography } from '@mui/material'
+import { useEffect, useState } from 'react'
 import { createSchedule } from '../../../api/schedule';
 import useFetch from '../../../hooks/useFetch';
 import { useSchedule } from '../../../contexts/ScheduleContext';
 import { formatDateToTextField } from '../../../utils/date-formats';
+import { Person } from '@mui/icons-material';
+import { readEmployeeList } from '../../../api/employee';
 
 
 export default function ScheduleFormDialog({ oneDay = false, defaultDate = new Date() }) {
@@ -11,7 +13,8 @@ export default function ScheduleFormDialog({ oneDay = false, defaultDate = new D
     title: '',
     description: '',
     startDate: defaultDate,
-    endDate: defaultDate
+    endDate: defaultDate,
+    participantIds: []
   }
   const { state, dispatch } = useSchedule();
   const [openDialog, setOpenDialog] = useState(false);
@@ -23,6 +26,9 @@ export default function ScheduleFormDialog({ oneDay = false, defaultDate = new D
       dispatch({ type: 'REFRESH_CALENDAR' });
     }
   });
+
+  const { trigger: fetchEmployees, data: employees } = useFetch(readEmployeeList);
+
 
   const handleClose = () => {
     setOpenDialog(false);
@@ -52,7 +58,18 @@ export default function ScheduleFormDialog({ oneDay = false, defaultDate = new D
       endDate: value
     }))
   }
+  const handleParticipantChange = (_, value) => {
+    const ids = value.map((participant) => participant.id);
+    setFormData((prevData) => ({
+      ...prevData,
+      participantIds: ids
+    }));
+  }
 
+  useEffect(() => {
+    fetchEmployees();
+  }, []);
+  
   return (
     <>
       <Button onClick={handleOpen} variant='contained'>New Schedule</Button>
@@ -149,6 +166,36 @@ export default function ScheduleFormDialog({ oneDay = false, defaultDate = new D
               </Grid>
             </Grid>
           }
+          <Autocomplete
+            onChange={handleParticipantChange}
+            multiple={true}
+            options={employees?.content || []}
+            getOptionLabel={(option) => option?.fullName}
+            renderOption={(props, option) => {
+              const { key, ...optionProps } = props;
+              return (
+                <Box
+                  key={key}
+                  component="li"
+                  sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
+                  {...optionProps}
+                >
+                  <Typography variant='body2' sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Person /> {option?.fullName}
+                  </Typography>
+                </Box>
+              );
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                placeholder="Select Participants"
+                label="Participants"
+                name="participants"
+                margin="normal"
+              />
+            )}
+          />
           <TextField
             label="Description"
             type="text"

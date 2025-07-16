@@ -2,10 +2,10 @@ import { Box, Divider, List, ListItem, ListItemText, Typography } from '@mui/mat
 import React, { useEffect, useState } from 'react'
 import useFetch from '../../../hooks/useFetch';
 import { readLatestTaskLogList } from '../../../api/task-log';
-import { useTaskContext } from '../../../contexts/TaskContext';
+import { useTask } from '../../../contexts/TaskContext';
 
 export default function TaskLogList() {
-     const { state } = useTaskContext();
+     const { state } = useTask();
      const [logs, setLogs] = useState([]);
      const { trigger, loading } = useFetch(readLatestTaskLogList, {
           onSuccess: (res) => {

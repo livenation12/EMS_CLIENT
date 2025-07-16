@@ -33,3 +33,8 @@ export const readSchuduleList = async ({ startDate, endDate }) => {
      const response = await axiosConfig.get(`${baseUri}/by-range?${urlParams}`,);
      return response.data;
 };
+
+export const updateScheduleById = async (id, payload) => {
+     const response = await axiosConfig.put(`${baseUri}/${id}`, payload);
+     return response.data;
+}

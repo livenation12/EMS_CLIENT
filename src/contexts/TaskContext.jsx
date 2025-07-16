@@ -44,6 +44,6 @@ export const TaskContextProvider = ({ children }) => {
      );
 };
 
-export const useTaskContext = () => {
+export const useTask = () => {
      return useContext(TaskContext);
 };

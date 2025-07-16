@@ -1,5 +1,5 @@
 import { Box } from '@mui/material'
-import EmployeeStatusTypeDialog from './features/EmployeeStatusTypeDialog'
+import EmployeeStatusTypeDialog from './manage/EmployeeStatusTypeDialog'
 
 export default function EmployeeManage() {
   return (

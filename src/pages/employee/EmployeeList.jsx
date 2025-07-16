@@ -1,14 +1,14 @@
 import { useEffect } from "react"
 import { readEmployeeList } from "../../api/employee"
 import useFetch from "../../hooks/useFetch"
-import { useEmployeeContext } from "../../contexts/EmployeeContext";
+import { useEmployee } from "../../contexts/EmployeeContext";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import EmployeeFormDialog from "./features/EmployeeFormDialog";
+import EmployeeFormDialog from "./list/EmployeeFormDialog";
 import { Box, Input, Avatar, Card, CardContent, CardHeader, Grid, IconButton } from "@mui/material"
 import { useState } from "react";
 
 export default function EmployeeList() {
-  const { state, dispatch } = useEmployeeContext();
+  const { state, dispatch } = useEmployee();
   const { data, loading, trigger } = useFetch(readEmployeeList, {});
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);

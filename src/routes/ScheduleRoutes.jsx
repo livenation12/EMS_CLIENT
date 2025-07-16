@@ -1,7 +1,7 @@
 import { ScheduleContextProvider } from "../contexts/ScheduleContext";
 import ScheduleLayout from "../layouts/ScheduleLayout";
 import ScheduleCalendar from "../pages/schedules/ScheduleCalendar";
-import NotReady from "../pages/NotReady";
+import ScheduleManage from "../pages/schedules/ScheduleManage";
 
 const scheduleRoutes = {
      path: 'schedules',
@@ -20,7 +20,7 @@ const scheduleRoutes = {
                     },
                     {
                          path: 'manage',
-                         element: <NotReady />
+                         element: <ScheduleManage />
                     }
                ]
           }

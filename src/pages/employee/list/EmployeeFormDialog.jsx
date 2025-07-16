@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material"
 import useFetch from '../../../hooks/useFetch';
 import { createEmployee } from '../../../api/employee';
-import { useEmployeeContext } from '../../../contexts/EmployeeContext';
+import { useEmployee } from '../../../contexts/EmployeeContext';
 
 const initialState = {
      firstName: '',
@@ -19,7 +19,7 @@ export default function EmployeeFormDialog() {
 
      const [openEmployeeForm, setOpenEmployeeForm] = useState(false);
      const [formData, setFormData] = useState(initialState);
-     const { dispatch } = useEmployeeContext();
+     const { dispatch } = useEmployee();
      const { trigger, loading } = useFetch(createEmployee, {
           onSuccess: () => {
                setOpenEmployeeForm(false);

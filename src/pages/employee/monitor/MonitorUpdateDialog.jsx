@@ -4,7 +4,7 @@ import useFetch from '../../../hooks/useFetch'
 import { readEmployeeStatusTypeList } from '../../../api/employee-status-type';
 import { updateEmployeeStatus } from '../../../api/employee-status';
 import { Circle, Send } from '@mui/icons-material';
-import { useEmployeeContext } from '../../../contexts/EmployeeContext';
+import { useEmployee } from '../../../contexts/EmployeeContext';
 import { useSnackbar } from '../../../contexts/SnackbarContext';
 
 const initialState = {
@@ -14,7 +14,7 @@ const initialState = {
 
 export default function MonitorUpdateDialog() {
   const snackBar = useSnackbar();
-  const { state, dispatch } = useEmployeeContext();
+  const { state, dispatch } = useEmployee();
   const [openDialog, setOpenDialog] = useState(false);
   const [formData, setFormData] = useState(initialState);
   const { trigger, data } = useFetch(readEmployeeStatusTypeList);

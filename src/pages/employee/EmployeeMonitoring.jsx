@@ -1,23 +1,26 @@
 
-import { Box, Avatar, Card, CardContent, CardHeader, Grid, FormGroup, FormControlLabel, Checkbox, Typography, Button, Snackbar, Chip, Tooltip } from "@mui/material"
+import { Box, Avatar, Card, CardContent, CardHeader, Grid, FormGroup, FormControlLabel, Checkbox, Typography, Button, Chip, Tooltip, IconButton, } from "@mui/material"
 import { readEmployeeList } from "../../api/employee";
 import { useCallback, useEffect, useState } from "react";
 import useFetch from "../../hooks/useFetch";
 import useEmployeeStatusSocket from "../../hooks/useEmployeeStatusSocket";
-import EmployeeStatusUpdateList from "./features/EmployeeStatusUpdateList";
-import MonitorUpdateDialog from "./features/MonitorUpdateDialog";
-import { useEmployeeContext } from "../../contexts/EmployeeContext";
+import MonitorUpdateDialog from "./monitor/MonitorUpdateDialog";
+import EmployeeStatusUpdateList from "./monitor/EmployeeStatusUpdateList"
+import { useEmployee } from "../../contexts/EmployeeContext";
+import { Circle, Timeline } from "@mui/icons-material";
+import EmployeeActivitiesDialog from "./monitor/EmployeeActivitiesDialog";
 export default function EmployeeMonitoring() {
-  const { state, dispatch } = useEmployeeContext();
+  const [activityDialog, setActivityDialog] = useState({
+    open: false,
+    activeId: null
+  });
+  const { state, dispatch } = useEmployee();
   const [employees, setEmployees] = useState([]);
   const { loading, trigger } = useFetch(readEmployeeList, {
     onSuccess: (res) => {
       setEmployees(res.data.content);
     }
   });
-  useEffect(() => {
-    trigger()
-  }, []);
 
   const handleStatusUpdate = useCallback((updates) => {
     setEmployees(prev => {
@@ -50,6 +53,21 @@ export default function EmployeeMonitoring() {
     const employeeId = Number(e.target.value);
     dispatch({ type: 'TOGGLE_CHECKED_EMPLOYEE', payload: employeeId });
   }
+
+
+  /* Activities Dialog functions */
+  const handleClose = () => {
+    setActivityDialog({ open: false, activeId: null });
+  }
+
+  const handleOpenDialog = (employeeId) => {
+    setActivityDialog({ open: true, activeId: employeeId });
+  }
+
+
+  useEffect(() => {
+    trigger()
+  }, []);
   return (
     <Box>
       <Box sx={{ display: "flex", justifyContent: "", width: "100%", mb: 2 }}>
@@ -85,21 +103,37 @@ export default function EmployeeMonitoring() {
                       action={
                         <Checkbox value={employee.id} onChange={handleCbChange} checked={new Set(state.checkedEmployees).has(employee.id)} />
                       }
-                      title={employee.fullName}
+                      title={
+                        // <Typography sx={{
+                        //   display: 'inline-flex',
+                        //   overflow: 'hidden',
+                        //   textOverflow: 'ellipsis',
+                        //   whiteSpace: 'nowrap',
+                        // }}>
+                        //   {
+                          employee.fullName
+                        //   }
+                        // </Typography>
+                      }
                       subheader={employee.email}
                     />
                     <CardContent>
                       <Typography
                         component="div"
-                        sx={{ display: "inline-flex", alignItems: "center", gap: 0.5 }}
+                        sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 0.5 }}
                         variant="body2"
                         color="text.secondary"
                       >
-                        <Chip
-                          component={Button}
-                          sx={{ bgcolor: employee?.status?.colorCode || "gray", color: "black" }}
-                          label={employee?.status?.label}
-                        />
+                        <Typography variant="caption" sx={{ textTransform: "capitalize", display: "inline-flex", gap: 1, alignItems: "center" }}>
+                          <Circle sx={{ color: employee?.status?.colorCode }} />
+                          {employee?.status?.label}
+                        </Typography>
+
+                        <Tooltip title="Activities">
+                          <IconButton onClick={() => handleOpenDialog(employee.id)}>
+                            <Timeline />
+                          </IconButton>
+                        </Tooltip>
                       </Typography>
                     </CardContent>
                   </Card>
@@ -111,6 +145,7 @@ export default function EmployeeMonitoring() {
           <EmployeeStatusUpdateList />
         </Grid>
       </Grid>
+      <EmployeeActivitiesDialog employeeId={activityDialog.activeId} open={activityDialog.open} onClose={handleClose} />
     </Box>
   )
 }
