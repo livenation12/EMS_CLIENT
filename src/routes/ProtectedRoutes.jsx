@@ -1,9 +1,9 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import useAuth from '../hooks/useAuth';
-import { CircularProgress, Box, Backdrop } from '@mui/material';
+import { CircularProgress, Backdrop } from '@mui/material';
 import { useEffect } from 'react';
 import useFetch from '../hooks/useFetch';
 import { verifyToken } from '../api/auth';
+import { useAuth } from '../contexts/AuthContext';
 export default function ProtectedRoutes() {
   const { state, dispatch } = useAuth();
   const { trigger } = useFetch(verifyToken, {
@@ -14,6 +14,8 @@ export default function ProtectedRoutes() {
       dispatch({ type: 'LOGIN', payload: res.data });
     },
   });
+  console.log(state.user);
+  
   useEffect(() => {
     dispatch({ type: 'BEGIN_LOADING' });
     trigger()

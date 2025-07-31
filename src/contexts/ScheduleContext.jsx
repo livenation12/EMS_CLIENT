@@ -18,7 +18,7 @@ const scheduleReducer = (state, action) => {
                };
           default:
                return state;
-     }
+     } 
 };
 
 export const ScheduleContext = createContext();

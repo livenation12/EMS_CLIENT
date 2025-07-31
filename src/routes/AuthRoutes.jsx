@@ -1,10 +1,9 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import useAuth from '../hooks/useAuth';
 import { CircularProgress, Backdrop } from '@mui/material';
 import { useEffect } from 'react';
 import useFetch from '../hooks/useFetch';
 import { verifyToken } from '../api/auth';
-
+import { useAuth } from '../contexts/AuthContext';
 export default function AuthRoutes() {
   const { state, dispatch } = useAuth();
   const { trigger } = useFetch(verifyToken, {

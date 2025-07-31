@@ -3,8 +3,7 @@ import { useState } from 'react'
 import useFetch from '../../hooks/useFetch'
 import { login } from '../../api/auth'
 import { useNavigate } from 'react-router-dom'
-import useAuth from '../../hooks/useAuth'
-
+import { useAuth } from '../../contexts/AuthContext'
 export default function Login() {
   const navigate = useNavigate()
   const { state, dispatch } = useAuth();

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Autocomplete, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from "@mui/material"
 import useFetch from '../../../hooks/useFetch';
 import { createTask } from '../../../api/task';
-import { Person } from '@mui/icons-material';
+import { Add, Person } from '@mui/icons-material';
 import { readEmployeeList } from '../../../api/employee';
 import { useTask } from '../../../contexts/TaskContext';
 
@@ -57,7 +57,7 @@ export default function TaskFormDialog() {
      }, [])
      return (
           <>
-               <Button onClick={handleFormOpen} variant="contained">New Task</Button>
+               <Button startIcon={<Add />} onClick={handleFormOpen} variant="contained">New Task</Button>
                <Dialog
                     open={openTaskDialog}
                     onClose={handleFormClose}

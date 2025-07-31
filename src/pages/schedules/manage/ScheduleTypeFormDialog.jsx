@@ -13,7 +13,7 @@ export default function ScheduleTypeFormDialog() {
      const [formData, setFormData] = useState(initialState);
 
      const { trigger } = useFetch(createScheduleType, {
-          onSuccess: (res) => {
+          onSuccess: () => {
                setOpen(false);
                setFormData(initialState);
           }
@@ -72,7 +72,7 @@ export default function ScheduleTypeFormDialog() {
                     </DialogContent>
                     <DialogActions>
                          <Button onClick={() => setOpen(false)}>Cancel</Button>
-                         <Button type="submit" variant="contained">Save</Button>
+                         <Button type="submit">Save</Button>
                     </DialogActions>
                </Dialog>
           </>

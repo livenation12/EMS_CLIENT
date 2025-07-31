@@ -9,6 +9,7 @@ import taskRoutes from "./TaskRoutes";
 import scheduleRoutes from "./ScheduleRoutes";
 import NotFound from "../pages/NotFound";
 import Notice from "../pages/notices/Notice";
+import manageRoutes from "./ManageRoutes";
 const router = createBrowserRouter([
      //Authentication routes
      {
@@ -48,7 +49,8 @@ const router = createBrowserRouter([
                          {
                               path: "/notices",
                               element: <Notice />,
-                         }
+                         },
+                         manageRoutes
                     ]
                }
           ]

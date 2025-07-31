@@ -6,10 +6,10 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Campaign, EventNote, People, Task } from '@mui/icons-material';
+import { Campaign, Collections, EventNote, People, Settings, Task } from '@mui/icons-material';
 import useFetch from '../hooks/useFetch';
 import { logout } from '../api/auth';
-import useAuth from '../hooks/useAuth';
+import { useAuth } from '../contexts/AuthContext';
 const drawerWidth = 240;
 
 export default function Sidebar({ children, window }) {
@@ -33,7 +33,9 @@ export default function Sidebar({ children, window }) {
           { text: 'Employees', icon: <People />, path: '/employees' },
           { text: 'Tasks', icon: <Task />, path: '/tasks' },
           { text: 'Schedules', icon: <EventNote />, path: '/schedules' },
+          { text: 'Gallery', icon: <Collections />, path: '/gallery' },
           { text: 'Notices', icon: <Campaign />, path: '/notices' },
+          { text: 'Manage', icon: <Settings />, path: '/manage' }
      ];
 
      const drawer = (

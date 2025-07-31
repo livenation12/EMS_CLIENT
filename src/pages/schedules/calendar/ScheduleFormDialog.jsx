@@ -4,8 +4,9 @@ import { createSchedule } from '../../../api/schedule';
 import useFetch from '../../../hooks/useFetch';
 import { useSchedule } from '../../../contexts/ScheduleContext';
 import { formatDateToTextField } from '../../../utils/date-formats';
-import { Person } from '@mui/icons-material';
+import { Add, Event, Person } from '@mui/icons-material';
 import { readEmployeeList } from '../../../api/employee';
+import { readAllScheduleTypes } from '../../../api/schedule-type';
 
 
 export default function ScheduleFormDialog({ oneDay = false, defaultDate = new Date() }) {
@@ -14,6 +15,7 @@ export default function ScheduleFormDialog({ oneDay = false, defaultDate = new D
     description: '',
     startDate: defaultDate,
     endDate: defaultDate,
+    typeId: '',
     participantIds: []
   }
   const { state, dispatch } = useSchedule();
@@ -28,7 +30,7 @@ export default function ScheduleFormDialog({ oneDay = false, defaultDate = new D
   });
 
   const { trigger: fetchEmployees, data: employees } = useFetch(readEmployeeList);
-
+  const { trigger: fetchScheduleTypes, data: scheduleTypes } = useFetch(readAllScheduleTypes);
 
   const handleClose = () => {
     setOpenDialog(false);
@@ -66,13 +68,21 @@ export default function ScheduleFormDialog({ oneDay = false, defaultDate = new D
     }));
   }
 
+  const handleTypeChange = (_, value) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      typeId: value.id
+    }))
+   }
+
   useEffect(() => {
+    fetchScheduleTypes();
     fetchEmployees();
   }, []);
-  
+
   return (
     <>
-      <Button onClick={handleOpen} variant='contained'>New Schedule</Button>
+      <Button onClick={handleOpen} variant='contained' startIcon={<Add />}>New Schedule</Button>
       <Dialog
         open={openDialog}
         onClose={handleClose}
@@ -94,6 +104,36 @@ export default function ScheduleFormDialog({ oneDay = false, defaultDate = new D
             fullWidth
             margin='normal'
             required />
+
+          <Autocomplete
+            onChange={handleTypeChange}
+            options={scheduleTypes || []}
+            getOptionLabel={(option) => option.label}
+            renderOption={(props, option) => {
+              const { key, ...optionProps } = props;
+              return (
+                <Box
+                  key={key}
+                  component="li"
+                  sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
+                  {...optionProps}
+                >
+                  <Typography variant='body2' sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Event sx={{ color: option?.colorCode }} /> {option?.label}
+                  </Typography>
+                </Box>
+              );
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                placeholder="Select Schedule Type"
+                label="Schedule Type"
+                name="scheduleTypeId"
+                margin="normal"
+              />
+            )}
+          />
           {oneDay ?
             <Grid container columnSpacing={2} size={{ xs: 12, sm: 6 }}>
               <Grid size={12} >
