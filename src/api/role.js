@@ -11,3 +11,8 @@ export const readAllRoles = async () => {
      const response = await axiosConfig.get(baseUri);
      return response.data;
 }
+
+export const readRoleById = async (id) => {
+     const response = await axiosConfig.get(`${baseUri}/${id}`);
+     return response.data;
+}

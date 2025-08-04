@@ -57,7 +57,7 @@ export default function TaskFormDialog() {
      }, [])
      return (
           <>
-               <Button startIcon={<Add />} onClick={handleFormOpen} variant="contained">New Task</Button>
+               <Button startIcon={<Add />} onClick={handleFormOpen} variant="contained">Task</Button>
                <Dialog
                     open={openTaskDialog}
                     onClose={handleFormClose}

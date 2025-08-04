@@ -4,12 +4,12 @@ import { useAuth } from '../contexts/AuthContext'
 import { borderBottom } from '../utils/styles';
 export default function PageNav({ links = [] }) {
      const { user } = useAuth();
-     const filteredLinks = links.filter((link) => !link.permittedRoles || link.permittedRoles.some(role => user.roles?.includes(role)));
+     // const filteredLinks = links.filter((link) => !link.permittedRoles || link.permittedRoles.some(role => user.roles?.includes(role)));
      return (
           <Box component="nav" sx={{ borderBottom: '1px solid #ccc', mb: 2 }}>
                <Toolbar>
                     <Stack direction="row" spacing={2}>
-                         {filteredLinks.map((link) => (
+                         {links.map((link) => (
                               <Button
                                    startIcon={link.icon}
                                    key={link.to}

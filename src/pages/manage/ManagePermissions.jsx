@@ -30,7 +30,7 @@ export default function ManagePermissions() {
       </Box>
       <TableContainer>
         <Table>
-          <TableHead sx={{ backgroundColor: 'background.gray.main', padding: 2 }}>
+          <TableHead sx={{ boxShadow: 1, border: '1px solid #e0e0e0' }}>
             <TableRow>
               {
                 tableHeaders.map((header) => (
@@ -46,7 +46,7 @@ export default function ManagePermissions() {
               data?.length > 0 ? data?.map((permission) => (
                 <TableRow key={permission.id}>
                   <TableCell sx={{ textTransform: 'capitalize', fontWeight: 'bold' }}>{permission.name}</TableCell>
-                  <TableCell sx={truncate}>{permission.description || "-"}</TableCell>
+                  <TableCell sx={truncate}>{permission.description}</TableCell>
                 </TableRow>
               ))
                 :

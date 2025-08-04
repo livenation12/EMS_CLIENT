@@ -82,7 +82,7 @@ export default function ScheduleFormDialog({ oneDay = false, defaultDate = new D
 
   return (
     <>
-      <Button onClick={handleOpen} variant='contained' startIcon={<Add />}>New Schedule</Button>
+      <Button onClick={handleOpen} variant='contained' startIcon={<Add />}>Schedule</Button>
       <Dialog
         open={openDialog}
         onClose={handleClose}

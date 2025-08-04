@@ -1,5 +1,4 @@
 import axiosConfig from "./axios-config"
-;
 const baseUri = "/users";
 
 export const readAllUsers = async () => {
@@ -13,6 +12,9 @@ export const readUserById = async (userId) => {
 }
 
 
-	
+export const assignRolesToUser = async (userId, payload) => {
+    const response = await axiosConfig.post(`${baseUri}/${userId}/roles`, payload);
+    return response.data;
+}
 
 

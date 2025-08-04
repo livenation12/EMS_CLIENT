@@ -39,6 +39,7 @@ const manageReducer = (state, action) => {
                          }
                     },
                };
+          
           default:
                return state;
      }

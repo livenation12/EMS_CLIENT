@@ -10,6 +10,7 @@ import scheduleRoutes from "./ScheduleRoutes";
 import NotFound from "../pages/NotFound";
 import Notice from "../pages/notices/Notice";
 import manageRoutes from "./ManageRoutes";
+import galleryRoutes from "./GalleryRoutes";
 const router = createBrowserRouter([
      //Authentication routes
      {
@@ -46,6 +47,7 @@ const router = createBrowserRouter([
                          employeeRoutes,
                          taskRoutes,
                          scheduleRoutes,
+                         galleryRoutes,
                          {
                               path: "/notices",
                               element: <Notice />,
