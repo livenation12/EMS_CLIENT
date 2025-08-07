@@ -1,9 +1,10 @@
 import { Add } from '@mui/icons-material';
-import { TextField, Autocomplete, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography, Input } from '@mui/material';
+import { TextField, Autocomplete, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography, Input, FilledInput } from '@mui/material';
 import { useState } from 'react'
 import useFetch from '../../hooks/useFetch';
 import { uploadGallery } from '../../api/gallery';
 import { useGallery } from '../../contexts/GalleryContext';
+import InputFile from '../../components/InputFile';
 
 
 export default function GalleryAddDialog() {
@@ -47,8 +48,6 @@ export default function GalleryAddDialog() {
                               label="Title"
                               type="text"
                               name="title"
-                              // value={formData.title}
-                              // onChange={handleChange}
                               fullWidth
                               margin='normal'
                               required
@@ -57,19 +56,14 @@ export default function GalleryAddDialog() {
                               label="Description"
                               type="text"
                               name="description"
-                              // value={formData.description}
-                              // onChange={handleChange}
                               fullWidth
                               margin='normal'
                               multiline
                               maxRows={4}
                          />
-                         <input
-                              name="attachments"
-                              multiple
-                              type="file"
-                              accept="image/*"
-                         />
+                         <Box sx={{ mt: 2 }}>
+                              <InputFile name="attachments" />
+                         </Box>
                     </DialogContent>
                     <DialogActions>
                          <Button onClick={handleClose}>Cancel</Button>

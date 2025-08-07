@@ -16,9 +16,10 @@ export default function ScheduleFormDialog({ oneDay = false, defaultDate = new D
     startDate: defaultDate,
     endDate: defaultDate,
     typeId: '',
-    participantIds: []
+    participantIds: [],
+    venue: ''
   }
-  const { state, dispatch } = useSchedule();
+  const { dispatch } = useSchedule();
   const [openDialog, setOpenDialog] = useState(false);
   const [formData, setFormData] = useState(initialState);
   const { trigger, loading, error } = useFetch(createSchedule, {
@@ -73,7 +74,7 @@ export default function ScheduleFormDialog({ oneDay = false, defaultDate = new D
       ...prevData,
       typeId: value.id
     }))
-   }
+  }
 
   useEffect(() => {
     fetchScheduleTypes();
@@ -100,6 +101,15 @@ export default function ScheduleFormDialog({ oneDay = false, defaultDate = new D
             type="text"
             name="title"
             value={formData.title}
+            onChange={handleChange}
+            fullWidth
+            margin='normal'
+            required />
+          <TextField
+            label="Venue"
+            type="text"
+            name="venue"
+            value={formData.venue}
             onChange={handleChange}
             fullWidth
             margin='normal'

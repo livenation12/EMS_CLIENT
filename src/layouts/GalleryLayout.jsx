@@ -5,7 +5,7 @@ import PageNav from '../components/PageNav'
 export default function GalleryLayout() {
      return (
           <Box>
-               <PageNav links={[]} />
+               {/* <PageNav links={[]} /> */}
                <Outlet />
           </Box>
      )

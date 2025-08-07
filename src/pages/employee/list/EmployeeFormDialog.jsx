@@ -3,6 +3,7 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } 
 import useFetch from '../../../hooks/useFetch';
 import { createEmployee } from '../../../api/employee';
 import { useEmployee } from '../../../contexts/EmployeeContext';
+import { Add } from '@mui/icons-material';
 
 const initialState = {
      firstName: '',
@@ -48,7 +49,7 @@ export default function EmployeeFormDialog() {
      }
      return (
           <>
-               <Button onClick={handleFormOpen} variant="contained">New Employee</Button>
+               <Button onClick={handleFormOpen} variant="contained" startIcon={<Add />}>Employee</Button>
                <Dialog
                     open={openEmployeeForm}
                     onClose={handleFormClose}

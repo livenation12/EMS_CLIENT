@@ -3,6 +3,7 @@ import { Button, Dialog, DialogActions, DialogContent, DialogContentText, Dialog
 import useFetch from '../../../hooks/useFetch'
 import { createEmployeeStatusType } from '../../../api/employee-status-type'
 import { useSnackbar } from "../../../contexts/SnackbarContext";
+import { Add } from '@mui/icons-material';
 
 const initialState = {
      label: '',
@@ -41,7 +42,7 @@ export default function EmployeeStatusTypeDialog() {
      }
      return (
           <>
-               <Button onClick={handleDialogOpen} variant="contained">New Status</Button>
+               <Button onClick={handleDialogOpen} variant="contained" startIcon={<Add />}>Status</Button>
                <Dialog
                     open={openDialog}
                     onClose={handleDialogClose}

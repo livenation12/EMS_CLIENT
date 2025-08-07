@@ -2,6 +2,7 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } 
 import { useState } from "react";
 import useFetch from "../../../hooks/useFetch";
 import { createScheduleType } from "../../../api/schedule-type";
+import { Add } from "@mui/icons-material";
 
 const initialState = {
      label: '',
@@ -33,7 +34,7 @@ export default function ScheduleTypeFormDialog() {
      }
      return (
           <>
-               <Button sx={{ float: 'right' }} onClick={() => setOpen(true)} variant="contained">Schedule Type</Button>
+               <Button sx={{ float: 'right' }} onClick={() => setOpen(true)} variant="contained" startIcon={<Add />}>Type</Button>
                <Dialog
                     open={open}
                     onClose={() => setOpen(false)}
@@ -55,7 +56,6 @@ export default function ScheduleTypeFormDialog() {
                               margin="normal"
                               onChange={handleChange}
                               fullWidth
-                              variant="standard"
                               required />
                          <TextField
                               sx={{ width: 200 }}
